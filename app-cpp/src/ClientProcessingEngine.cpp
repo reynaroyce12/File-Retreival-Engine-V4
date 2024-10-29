@@ -117,7 +117,7 @@ IndexResult ClientProcessingEngine::indexFolder(std::string folderPath) {
                     std::lock_guard<std::mutex> lock(indexRequestMutex);
                     fre::IndexReq indexRequest;
                     fre::IndexRep indexReply;
-                    indexRequest.set_client_id(1);
+                    indexRequest.set_client_id("1");
                     indexRequest.set_document_path(filePath);
                     for (const auto &[word, frequency] : wordFreqeuncies) {
                         std::cout << "Inserting word: " << word << ", frequency: " << frequency << std::endl;

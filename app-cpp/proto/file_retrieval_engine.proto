@@ -10,7 +10,7 @@ service FileRetrievalEngine {
 }
 
 message IndexReq {
-    int32 client_id = 1;
+    string client_id = 1;
     string document_path = 2;
     map<string, int64> word_frequencies = 3;
 }
