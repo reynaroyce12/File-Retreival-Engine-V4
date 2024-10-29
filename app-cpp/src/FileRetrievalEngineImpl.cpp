@@ -14,6 +14,8 @@ grpc::Status FileRetrievalEngineImpl::ComputeIndex(
     //       update the index store with the word frequencies and the document number
     //       return an acknowledgement as an IndexRep reply
 
+    std::cout << "From the compute Index" << std::endl;
+
     return grpc::Status::OK;
 }
 

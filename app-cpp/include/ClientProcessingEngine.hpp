@@ -29,9 +29,18 @@ struct SearchResult {
 };
 
 class ClientProcessingEngine {
-    // TO-DO keep track of the connection
+    // TO-DO keep track of the connection ✅
+    std::string serverIPAddress;
+    std::string serverPort;
+
     std::shared_ptr<grpc::Channel> channel;
     std::unique_ptr<fre::FileRetrievalEngine::Stub> stub;
+
+    grpc::Status status;
+    fre::SearchReq searchRequest;
+    fre::SearchRep searchReply;
+
+    std::mutex indexRequestMutex;
 
     public:
         // constructor
@@ -39,12 +48,17 @@ class ClientProcessingEngine {
 
         // default virtual destructor
         virtual ~ClientProcessingEngine() = default;
+        
+        bool connect(std::string serverIPAddress, std::string serverPort);
 
         IndexResult indexFolder(std::string folderPath);
         
         SearchResult search(std::vector<std::string> terms);
+
+        // Utility functions for indexing and search
+        std::unordered_map<std::string, long> extractWords(const std::string& fileContent);
+
         
-        void connect(std::string serverIP, std::string serverPort);
 };
 
 #endif

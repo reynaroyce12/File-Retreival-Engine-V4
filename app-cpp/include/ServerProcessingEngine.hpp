@@ -2,6 +2,7 @@
 #define SERVER_SIDE_ENGINE_H
 
 #include <memory>
+#include <thread>
 
 #include <grpc/grpc.h>
 #include <grpcpp/security/server_credentials.h>
@@ -15,9 +16,16 @@
 
 class ServerProcessingEngine {
     std::shared_ptr<IndexStore> store;
-    // TO-DO keep track of the FileRetrievalEngineImpl object
-    // TO-DO keep track of the gRPC Server object
-    // TO-DO keep track of the gRPC Server thread
+    // TO-DO keep track of the FileRetrievalEngineImpl object ✅
+    // TO-DO keep track of the gRPC Server object ✅
+    // TO-DO keep track of the gRPC Server thread ✅
+
+    std::string serverAddress;
+    std::string serverPort;
+
+    std::unique_ptr<grpc::Server> RPCServer;
+    FileRetrievalEngineImpl service;
+    std::thread serverThread;
 
     public:
         // constructor

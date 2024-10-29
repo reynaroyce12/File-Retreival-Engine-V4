@@ -10,7 +10,7 @@ void runWorker()
 
 int main(int argc, char** argv)
 {
-    std::string serverIP;
+    std::string serverIPAddress;
     std::string serverPort;
     int numberOfClients;
     std::vector<std::string> clientsDatasetPath;

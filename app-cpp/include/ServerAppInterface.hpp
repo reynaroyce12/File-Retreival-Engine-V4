@@ -17,7 +17,7 @@ class ServerAppInterface
         virtual ~ServerAppInterface() = default;
 
         // read commands from the user
-        void readCommands();
+        void readCommands(int serverPort);
 };
 
 #endif
