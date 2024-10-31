@@ -117,8 +117,10 @@ void ClientAppInterface::readCommands() {
                 std::cout << "Search Results: " << "( Top 10 out of " << result.documentFrequencies.size() << ")\n"
                           << std::endl;
                 for (const auto &docFrequency : result.documentFrequencies) {
-                    std::cout << GREEN << docFrequency.documentPath << " (Frequency: " << docFrequency.wordFrequency << ")" << RESET << std::endl;
+                    std::cout << GREEN << "* " << docFrequency.clientId << ": " << docFrequency.documentPath << " (Frequency: " << docFrequency.wordFrequency << ")" << RESET << std::endl;
                 }
+
+                
             }
 
             continue;

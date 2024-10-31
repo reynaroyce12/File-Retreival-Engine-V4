@@ -167,10 +167,10 @@ IndexResult ClientProcessingEngine::indexFolder(std::string folderPath) {
 
 SearchResult ClientProcessingEngine::search(std::vector<std::string> terms) {
     SearchResult result = {0.0, { }};
-    // TO-DO get the start time
-    // TO-DO perform a remote procedure call to the server by calling the gRPC client stub
-    // TO-DO get the stop time and calculate the execution time
-    // TO-DO return the execution time and the top 10 documents and frequencies
+    // TO-DO get the start time ✅
+    // TO-DO perform a remote procedure call to the server by calling the gRPC client stub ✅
+    // TO-DO get the stop time and calculate the execution time ✅
+    // TO-DO return the execution time and the top 10 documents and frequencies ✅
     auto searchStartTime = std::chrono::steady_clock::now();
 
     fre::SearchReq searchRequest;
@@ -189,8 +189,13 @@ SearchResult ClientProcessingEngine::search(std::vector<std::string> terms) {
         return result;
     }
 
-    for (const auto& entry : searchReply.search_results()) {
-        result.documentFrequencies.push_back({entry.first, entry.second});
+
+    for (const auto &entry : searchReply.search_results()){
+        result.documentFrequencies.push_back({
+            entry.document_path(), 
+            entry.frequency(),    
+            entry.client_id()      
+        });
     }
 
     auto searchStopTime = std::chrono::steady_clock::now();

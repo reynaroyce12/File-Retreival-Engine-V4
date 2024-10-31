@@ -33,14 +33,27 @@ long IndexStore::putDocument(std::string documentPath, std::string clientId) {
     return documentNumber;
 }
 
-std::string IndexStore::getDocument(long documentNumber) {
-    std::string documentPath = "";
+// std::string IndexStore::getDocument(long documentNumber) {
+//     std::string documentPath = "";
 
-    if (reverseDocumentMap.contains(documentNumber)) {
-        documentPath = reverseDocumentMap[documentNumber];
+//     if (reverseDocumentMap.contains(documentNumber)) {
+//         documentPath = reverseDocumentMap[documentNumber];
+//     }
+
+//     return documentPath;
+// }
+
+DocumentResult IndexStore::getDocument(long documentNumber) {
+    std::lock_guard<std::mutex> lock(documentMapMutex);
+
+    auto it = reverseDocumentMap.find(documentNumber);
+    if (it != reverseDocumentMap.end()) {
+        const std::string& documentPath = it->second;
+
+        const DocumentInfo& info = documentMap[documentPath];
+        return { documentPath, info.clientId }; 
     }
-
-    return documentPath;
+    return { "", "" };
 }
 
 void IndexStore::updateIndex(long documentNumber, const std::unordered_map<std::string, long> &wordFrequencies) {

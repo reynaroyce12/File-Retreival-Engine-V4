@@ -32,6 +32,12 @@ message SearchReq {
     repeated string terms = 1;
 }
 
+message DocumentResult {
+    string document_path = 1;
+    int64 frequency = 2;
+    string client_id = 3;
+}
+
 message SearchRep {
-    map<string, int64> search_results = 1;
+    repeated DocumentResult search_results = 1;
 }

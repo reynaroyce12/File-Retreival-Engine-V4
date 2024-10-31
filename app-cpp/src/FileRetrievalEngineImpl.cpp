@@ -91,11 +91,21 @@ grpc::Status FileRetrievalEngineImpl::ComputeSearch(
         sortedResults.resize(10);  
     }
 
-    for (const auto &[documentNumber, frequency] : sortedResults) {
-        std::string documentPath = store->getDocument(documentNumber);
-        std::cout << "Document Path: " << documentPath << ", Frequency: " << frequency << std::endl;
+    // for (const auto &[documentNumber, frequency] : sortedResults) {
+    //     std::string documentPath = store->getDocument(documentNumber);
+    //     std::cout << "Document Path: " << documentPath << ", Frequency: " << frequency << std::endl;
 
-        (*reply->mutable_search_results())[documentPath] = frequency;
+    //     (*reply->mutable_search_results())[documentPath] = frequency;
+    // }
+    for (const auto &[documentNumber, frequency] : sortedResults)
+    {
+        DocumentResult documentResult = store->getDocument(documentNumber);
+
+        // Create a new DocumentResult entry and populate it
+        auto *resultEntry = reply->add_search_results();
+        resultEntry->set_document_path(documentResult.documentPath);
+        resultEntry->set_frequency(frequency);
+        resultEntry->set_client_id(documentResult.clientId);
     }
 
     return grpc::Status::OK;

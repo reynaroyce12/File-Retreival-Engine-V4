@@ -21,6 +21,7 @@ struct IndexResult {
 struct DocPathFreqPair {
     std::string documentPath;
     long wordFrequency;
+    std::string clientId;
 };
 
 struct SearchResult {

@@ -17,6 +17,12 @@ struct DocumentInfo {
     std::string clientId;
 };
 
+struct DocumentResult {
+    std::string documentPath;
+    std::string clientId;
+};
+
+
 class IndexStore {
     // TO-DO declare data structure that keeps track of the DocumentMap
     // TO-DO declare data structures that keeps track of the TermInvertedIndex
@@ -37,7 +43,8 @@ class IndexStore {
         virtual ~IndexStore() = default;
         
         long putDocument(std::string documentPath, std::string clientId);
-        std::string getDocument(long documentNumber);
+        // std::string getDocument(long documentNumber);
+        DocumentResult getDocument(long documentNumber);
 
         void updateIndex(long documentNumber, const std::unordered_map<std::string, long> &wordFrequencies);
         std::vector<DocFreqPair> lookupIndex(std::string term);
