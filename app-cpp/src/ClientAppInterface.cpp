@@ -96,6 +96,31 @@ void ClientAppInterface::readCommands() {
         if (command.size() >= 6 && command.substr(0, 6) == "search") {
             // TO-DO parse command and call search on the processing engine
             // TO-DO print the execution time and the top 10 search results
+
+            std::string searchQuery = command.substr(7);
+
+            std::vector<std::string> terms;
+            std::istringstream stream(searchQuery);
+            std::string term;
+
+            while (stream >> term) {
+                terms.push_back(term);
+            }
+
+            SearchResult result = engine->search(terms);
+
+            std::cout << "\nSearch executed in " << result.executionTime << " seconds." << std::endl;
+
+            if (result.documentFrequencies.empty()) {
+                std::cout << YELLOW << "No results found" << RESET << std::endl;
+            } else {
+                std::cout << "Search Results: " << "( Top 10 out of " << result.documentFrequencies.size() << ")\n"
+                          << std::endl;
+                for (const auto &docFrequency : result.documentFrequencies) {
+                    std::cout << GREEN << docFrequency.documentPath << " (Frequency: " << docFrequency.wordFrequency << ")" << RESET << std::endl;
+                }
+            }
+
             continue;
         }
 

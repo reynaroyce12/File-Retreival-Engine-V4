@@ -6,19 +6,29 @@ IndexStore::IndexStore() {
     termInvertedIndex = {};
 }
 
-long IndexStore::putDocument(std::string documentPath) {
+long IndexStore::putDocument(std::string documentPath, std::string clientId) {
 
     std::lock_guard<std::mutex> lock(documentMapMutex);
 
     if(documentMap.contains(documentPath)) {
-        return documentMap[documentPath];
+        return documentMap[documentPath].documentNumber;
     }
 
     long documentNumber = documentMap.size() +  1;
-    documentMap[documentPath] = documentNumber;
+    documentMap[documentPath] = { documentNumber, clientId };
+
 
     // reverse map for getDocument method for constant complexity while retrieving docs
     reverseDocumentMap[documentNumber] = documentPath;
+
+    //    std::cout << "Document Map Contents:" << std::endl;
+    //     for (const auto& entry : documentMap) {
+    //         const std::string& documentPath = entry.first;
+    //         const DocumentInfo& info = entry.second;
+    //         std::cout << "Document Path: " << documentPath
+    //                   << ", Document Number: " << info.documentNumber
+    //                   << ", Client ID: " << info.clientId << std::endl;
+    //     }
 
     return documentNumber;
 }

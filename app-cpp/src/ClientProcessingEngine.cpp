@@ -171,6 +171,31 @@ SearchResult ClientProcessingEngine::search(std::vector<std::string> terms) {
     // TO-DO perform a remote procedure call to the server by calling the gRPC client stub
     // TO-DO get the stop time and calculate the execution time
     // TO-DO return the execution time and the top 10 documents and frequencies
+    auto searchStartTime = std::chrono::steady_clock::now();
+
+    fre::SearchReq searchRequest;
+    fre::SearchRep searchReply;
+
+    for (const auto& term : terms) {
+        searchRequest.add_terms(term);
+    }
+
+    std::unique_ptr<grpc::ClientContext> context;
+    context = std::make_unique<grpc::ClientContext>();
+    status = stub->ComputeSearch(context.get(), searchRequest, &searchReply);
+
+    if(!status.ok()) {
+        std::cout << "gRPC search call failed" << std::endl;
+        return result;
+    }
+
+    for (const auto& entry : searchReply.search_results()) {
+        result.documentFrequencies.push_back({entry.first, entry.second});
+    }
+
+    auto searchStopTime = std::chrono::steady_clock::now();
+    auto durationInSeconds = std::chrono::duration_cast<std::chrono::duration<double>>(searchStopTime - searchStartTime).count();
+    result.executionTime = durationInSeconds;
 
     return std::move(result);
 }

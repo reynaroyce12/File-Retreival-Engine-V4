@@ -15,7 +15,6 @@ struct DocFreqPair {
 struct DocumentInfo {
     long documentNumber;
     std::string clientId;
-    std::unordered_map<std::string, long> wordFrequencies;
 };
 
 class IndexStore {
@@ -23,7 +22,7 @@ class IndexStore {
     // TO-DO declare data structures that keeps track of the TermInvertedIndex
     // TO-DO declare two locks, one for the DocumentMap and one for the TermInvertedIndex
 
-    std::unordered_map<std::string, long> documentMap;
+    std::unordered_map<std::string, DocumentInfo> documentMap;
     std::unordered_map<long, std::string> reverseDocumentMap;
     std::unordered_map<std::string, std::vector<DocFreqPair>> termInvertedIndex;
 
@@ -37,8 +36,9 @@ class IndexStore {
         // default virtual destructor
         virtual ~IndexStore() = default;
         
-        long putDocument(std::string documentPath);
+        long putDocument(std::string documentPath, std::string clientId);
         std::string getDocument(long documentNumber);
+
         void updateIndex(long documentNumber, const std::unordered_map<std::string, long> &wordFrequencies);
         std::vector<DocFreqPair> lookupIndex(std::string term);
 };

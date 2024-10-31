@@ -15,8 +15,16 @@ grpc::Status FileRetrievalEngineImpl::ComputeIndex(
     //       get the document number associated with the document path (call putDocument)
     //       update the index store with the word frequencies and the document number
     //       return an acknowledgement as an IndexRep reply
+    std::string documentPath = request->document_path();
+    std::string clientId = request->client_id();
+    std::unordered_map<std::string, long> wordFrequencies;
+    for (const auto& [word, frequency] : request->word_frequencies()) {
+        wordFrequencies[word] = frequency;
+    }
 
-    std::cout << "Client Id Passed: " << request->client_id() << std::endl;
+    int documentNumber = store->putDocument(documentPath, clientId);
+    store->updateIndex(documentNumber, wordFrequencies);
+
 
     return grpc::Status::OK;
 }
@@ -32,6 +40,63 @@ grpc::Status FileRetrievalEngineImpl::ComputeSearch(
     //       sort the document and frequency pairs and keep only the top 10
     //       for each document number get from the index store the document path
     //       return the top 10 results as a SearchRep reply
+
+    std::unordered_map<long, long> combinedResults;
+
+    std::vector<std::string> terms;
+    for (const auto& term : request->terms()) {
+        terms.push_back(term);
+    }
+
+    bool hasAnd = false;
+    auto andPos = std::find(terms.begin(), terms.end(), "AND");
+    if (andPos != terms.end()) {
+        hasAnd = true;
+        terms.erase(andPos);
+    }
+
+    for (const auto& term : terms) {
+        if(term.empty()) continue;
+
+        auto termResults = store->lookupIndex(term);
+
+        if(termResults.empty()) {
+            if (hasAnd) {
+                return grpc::Status::OK; 
+            } else {
+                continue;
+            }
+        }
+
+        if(combinedResults.empty()) {
+            for (const auto& result : termResults) {
+                combinedResults[result.documentNumber] = result.wordFrequency;
+            }
+        } else {
+            std::unordered_map<long, long> currentResults;
+            for (const auto &result : termResults) {
+                if (combinedResults.count(result.documentNumber)) {
+                    currentResults[result.documentNumber] = combinedResults[result.documentNumber] + result.wordFrequency;
+                }
+            }
+            combinedResults = std::move(currentResults);
+        }
+    }
+
+    std::vector<std::pair<long, long>> sortedResults(combinedResults.begin(), combinedResults.end());
+    std::sort(sortedResults.begin(), sortedResults.end(), [](auto& a, auto& b) {
+        return a.second > b.second; 
+    });
+    if (sortedResults.size() > 10) {
+        sortedResults.resize(10);  
+    }
+
+    for (const auto &[documentNumber, frequency] : sortedResults) {
+        std::string documentPath = store->getDocument(documentNumber);
+        std::cout << "Document Path: " << documentPath << ", Frequency: " << frequency << std::endl;
+
+        (*reply->mutable_search_results())[documentPath] = frequency;
+    }
 
     return grpc::Status::OK;
 }

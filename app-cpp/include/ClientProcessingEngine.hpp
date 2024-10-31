@@ -24,7 +24,7 @@ struct DocPathFreqPair {
 };
 
 struct SearchResult {
-    double excutionTime;
+    double executionTime;
     std::vector<DocPathFreqPair> documentFrequencies;
 };
 
@@ -37,8 +37,8 @@ class ClientProcessingEngine {
     std::unique_ptr<fre::FileRetrievalEngine::Stub> stub;
 
     grpc::Status status;
-    fre::SearchReq searchRequest;
-    fre::SearchRep searchReply;
+    // fre::SearchReq searchRequest;
+    // fre::SearchRep searchReply;
 
     std::mutex indexRequestMutex;
 
