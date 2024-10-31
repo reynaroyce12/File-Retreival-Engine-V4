@@ -42,6 +42,8 @@ class ClientProcessingEngine {
 
     std::mutex indexRequestMutex;
 
+    std::string clientId;
+
     public:
         // constructor
         ClientProcessingEngine();
@@ -57,8 +59,6 @@ class ClientProcessingEngine {
 
         // Utility functions for indexing and search
         std::unordered_map<std::string, long> extractWords(const std::string& fileContent);
-
-        
 };
 
 #endif

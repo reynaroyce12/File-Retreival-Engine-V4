@@ -22,6 +22,21 @@ bool ClientProcessingEngine::connect(std::string serverIPAddress, std::string se
         return false;
     }
 
+    std::unique_ptr<grpc::ClientContext> context;
+    context = std::make_unique<grpc::ClientContext>();
+    fre::RegisterClientReq registerClientRequest;
+    fre::RegisterClientRep registerClientResponse;
+
+    status = stub->RegisterClient(context.get(), registerClientRequest, &registerClientResponse);
+    if(status.ok()) {
+        clientId = registerClientResponse.client_id();
+        std::cout << "Connected with client ID: " << clientId << std::endl; 
+        return true;
+    } else {
+        std::cout << "Failed to register client: " << std::endl;
+        return false;
+    }
+
     return true;
 }
 
@@ -117,10 +132,10 @@ IndexResult ClientProcessingEngine::indexFolder(std::string folderPath) {
                     std::lock_guard<std::mutex> lock(indexRequestMutex);
                     fre::IndexReq indexRequest;
                     fre::IndexRep indexReply;
-                    indexRequest.set_client_id("1");
+                    indexRequest.set_client_id(clientId);
                     indexRequest.set_document_path(filePath);
                     for (const auto &[word, frequency] : wordFreqeuncies) {
-                        std::cout << "Inserting word: " << word << ", frequency: " << frequency << std::endl;
+                        // std::cout << "Inserting word: " << word << ", frequency: " << frequency << std::endl;
                         (*indexRequest.mutable_word_frequencies())[word] = frequency;
                     }
                     status = stub->ComputeIndex(context.get(), indexRequest, &indexReply);

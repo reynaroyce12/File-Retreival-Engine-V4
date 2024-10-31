@@ -12,10 +12,13 @@ class FileRetrievalEngineImpl final : public fre::FileRetrievalEngine::Service
 {
     std::shared_ptr<IndexStore> store;
 
+    std::unordered_map<int, std::string> clientIds;
+
     public:
         explicit FileRetrievalEngineImpl(std::shared_ptr<IndexStore> store);
         grpc::Status ComputeIndex(grpc::ServerContext* context, const fre::IndexReq* request, fre::IndexRep* reply);
         grpc::Status ComputeSearch(grpc::ServerContext* context, const fre::SearchReq* request, fre::SearchRep* reply);
+        grpc::Status RegisterClient(grpc::ServerContext* context, const fre::RegisterClientReq* request, fre::RegisterClientRep* reply);
 };
 
 #endif

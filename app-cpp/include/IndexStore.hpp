@@ -12,6 +12,12 @@ struct DocFreqPair {
     long wordFrequency;
 };
 
+struct DocumentInfo {
+    long documentNumber;
+    std::string clientId;
+    std::unordered_map<std::string, long> wordFrequencies;
+};
+
 class IndexStore {
     // TO-DO declare data structure that keeps track of the DocumentMap
     // TO-DO declare data structures that keeps track of the TermInvertedIndex
