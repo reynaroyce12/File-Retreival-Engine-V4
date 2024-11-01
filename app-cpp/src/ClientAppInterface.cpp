@@ -42,8 +42,8 @@ void ClientAppInterface::readCommands() {
 
             iss >> action >> serverIPAddress >> serverPort;
 
-            std::cout << "Server IP " << serverIPAddress << std::endl;
-            std::cout << "Server Port " << serverPort << std::endl;
+            // std::cout << "Server IP " << serverIPAddress << std::endl;
+            // std::cout << "Server Port " << serverPort << std::endl;
 
 
             if(serverIPAddress.empty() || serverPort.empty()) {
