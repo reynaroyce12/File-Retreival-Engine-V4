@@ -114,7 +114,7 @@ void ClientAppInterface::readCommands() {
             if (result.documentFrequencies.empty()) {
                 std::cout << YELLOW << "No results found" << RESET << std::endl;
             } else {
-                std::cout << "Search Results: " << "( Top 10 out of " << result.documentFrequencies.size() << ")\n"
+                std::cout << "Search Results: " << "( Top 10 out of " << result.totalSize << ")\n"
                           << std::endl;
                 for (const auto &docFrequency : result.documentFrequencies) {
                     std::cout << GREEN << "* " << docFrequency.clientId << ": " << docFrequency.documentPath << " (Frequency: " << docFrequency.wordFrequency << ")" << RESET << std::endl;

@@ -40,4 +40,5 @@ message DocumentResult {
 
 message SearchRep {
     repeated DocumentResult search_results = 1;
+    int32 total_result = 2;
 }

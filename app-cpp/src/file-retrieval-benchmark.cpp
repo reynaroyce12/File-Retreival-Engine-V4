@@ -41,10 +41,13 @@ void performSearch(ClientProcessingEngine &client, const std::string &query) {
 
     auto &results = searchResult.documentFrequencies;
     size_t resultCount = std::min(results.size(), static_cast<size_t>(10));
-    std::cout << "Search results (top " << resultCount << " out of " << results.size() << "):" << std::endl;
+    std::cout << "Search results (top 10 out of " << searchResult.totalSize << "):" << std::endl;
 
-    for (size_t i = 0; i < resultCount; ++i) {
-        const auto &doc = results[i];
+    // for (size_t i = 0; i < resultCount; ++i) {
+    //     const auto &doc = results[i];
+    //     std::cout << "* " << doc.clientId << ": " << doc.documentPath << ": " << doc.wordFrequency << std::endl;
+    // }
+    for(auto doc: results){
         std::cout << "* " << doc.clientId << ": " << doc.documentPath << ": " << doc.wordFrequency << std::endl;
     }
 }

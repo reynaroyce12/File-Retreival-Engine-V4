@@ -87,6 +87,7 @@ grpc::Status FileRetrievalEngineImpl::ComputeSearch(
     std::sort(sortedResults.begin(), sortedResults.end(), [](auto& a, auto& b) {
         return a.second > b.second; 
     });
+    int totalSize = sortedResults.size();
     if (sortedResults.size() > 10) {
         sortedResults.resize(10);  
     }
@@ -103,11 +104,12 @@ grpc::Status FileRetrievalEngineImpl::ComputeSearch(
 
         // Create a new DocumentResult entry and populate it
         auto *resultEntry = reply->add_search_results();
+        
         resultEntry->set_document_path(documentResult.documentPath);
         resultEntry->set_frequency(frequency);
         resultEntry->set_client_id(documentResult.clientId);
     }
-
+    reply->set_total_result(totalSize);
     return grpc::Status::OK;
 }
 

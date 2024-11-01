@@ -197,7 +197,7 @@ SearchResult ClientProcessingEngine::search(std::vector<std::string> terms) {
             entry.client_id()      
         });
     }
-
+    result.totalSize = searchReply.total_result();
     auto searchStopTime = std::chrono::steady_clock::now();
     auto durationInSeconds = std::chrono::duration_cast<std::chrono::duration<double>>(searchStopTime - searchStartTime).count();
     result.executionTime = durationInSeconds;

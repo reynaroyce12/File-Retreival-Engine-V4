@@ -27,6 +27,7 @@ struct DocPathFreqPair {
 struct SearchResult {
     double executionTime;
     std::vector<DocPathFreqPair> documentFrequencies;
+    int totalSize;
 };
 
 class ClientProcessingEngine {
