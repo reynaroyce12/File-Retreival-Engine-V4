@@ -8,12 +8,9 @@
 #include <condition_variable>
 
 ClientProcessingEngine::ClientProcessingEngine() {
-    // TO-DO add information to keep track of the gRPC client stub
 }
 
 bool ClientProcessingEngine::connect(std::string serverIPAddress, std::string serverPort) {
-    // TO-DO create communication channel with the gRPC Server ✅
-    // TO-DO create gRPC client stub ✅
 
     channel = grpc::CreateChannel(serverIPAddress + ":" + serverPort, grpc::InsecureChannelCredentials());
     stub = fre::FileRetrievalEngine::NewStub(channel);
@@ -63,14 +60,6 @@ std::unordered_map<std::string, long> ClientProcessingEngine::extractWords(const
 
 IndexResult ClientProcessingEngine::indexFolder(std::string folderPath) {
     IndexResult result = {0.0, 0};
-    // TO-DO get the start time ✅
-    // TO-DO crawl the folder path and extrac all file paths ✅
-    // TO-DO for each file extract all alphanumeric terms that are larger than 2 characters
-    //       and count their frequencies ✅
-    // TO-DO increment the total number of bytes read ✅
-    // TO-DO for each file perform a remote procedure call to the server by calling the gRPC client stub ✅
-    // TO-DO get the stop time and calculate the execution time ✅
-    // TO-DO return the execution time and the total number of bytes read ✅
 
     std::queue<std::string> fileQueue;
     std::mutex fileQueueMutex;
@@ -167,10 +156,7 @@ IndexResult ClientProcessingEngine::indexFolder(std::string folderPath) {
 
 SearchResult ClientProcessingEngine::search(std::vector<std::string> terms) {
     SearchResult result = {0.0, { }};
-    // TO-DO get the start time ✅
-    // TO-DO perform a remote procedure call to the server by calling the gRPC client stub ✅
-    // TO-DO get the stop time and calculate the execution time ✅
-    // TO-DO return the execution time and the top 10 documents and frequencies ✅
+
     auto searchStartTime = std::chrono::steady_clock::now();
 
     fre::SearchReq searchRequest;
@@ -197,6 +183,7 @@ SearchResult ClientProcessingEngine::search(std::vector<std::string> terms) {
             entry.client_id()      
         });
     }
+    
     result.totalSize = searchReply.total_result();
     auto searchStopTime = std::chrono::steady_clock::now();
     auto durationInSeconds = std::chrono::duration_cast<std::chrono::duration<double>>(searchStopTime - searchStartTime).count();

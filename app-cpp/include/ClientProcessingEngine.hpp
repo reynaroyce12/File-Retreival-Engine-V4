@@ -31,19 +31,14 @@ struct SearchResult {
 };
 
 class ClientProcessingEngine {
-    // TO-DO keep track of the connection ✅
     std::string serverIPAddress;
     std::string serverPort;
 
     std::shared_ptr<grpc::Channel> channel;
     std::unique_ptr<fre::FileRetrievalEngine::Stub> stub;
-
     grpc::Status status;
-    // fre::SearchReq searchRequest;
-    // fre::SearchRep searchReply;
 
     std::mutex indexRequestMutex;
-
     std::string clientId;
 
     public:
@@ -59,7 +54,7 @@ class ClientProcessingEngine {
         
         SearchResult search(std::vector<std::string> terms);
 
-        // Utility functions for indexing and search
+        // Utility function for indexing
         std::unordered_map<std::string, long> extractWords(const std::string& fileContent);
 };
 

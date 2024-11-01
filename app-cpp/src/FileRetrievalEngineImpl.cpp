@@ -2,7 +2,6 @@
 #include <iostream>
 
 FileRetrievalEngineImpl::FileRetrievalEngineImpl(std::shared_ptr<IndexStore> store) : store(store) {
-    // TO-DO implement constructor
 }
 
 
@@ -11,10 +10,7 @@ grpc::Status FileRetrievalEngineImpl::ComputeIndex(
         const fre::IndexReq* request,
         fre::IndexRep* reply)
 {
-    // TO-DO extract the document path, client ID and word frequencies from the IndexReq request
-    //       get the document number associated with the document path (call putDocument)
-    //       update the index store with the word frequencies and the document number
-    //       return an acknowledgement as an IndexRep reply
+
     std::string documentPath = request->document_path();
     std::string clientId = request->client_id();
     std::unordered_map<std::string, long> wordFrequencies;
@@ -34,12 +30,6 @@ grpc::Status FileRetrievalEngineImpl::ComputeSearch(
         const fre::SearchReq* request,
         fre::SearchRep* reply)
 {
-    // TO-DO extract the terms from the SearchReq request
-    //       for each term get the pairs of documents and frequencies from the index store
-    //       combine the returned documents and frequencies from all of the specified terms
-    //       sort the document and frequency pairs and keep only the top 10
-    //       for each document number get from the index store the document path
-    //       return the top 10 results as a SearchRep reply
 
     std::unordered_map<long, long> combinedResults;
 
@@ -87,22 +77,16 @@ grpc::Status FileRetrievalEngineImpl::ComputeSearch(
     std::sort(sortedResults.begin(), sortedResults.end(), [](auto& a, auto& b) {
         return a.second > b.second; 
     });
+    
     int totalSize = sortedResults.size();
     if (sortedResults.size() > 10) {
         sortedResults.resize(10);  
     }
 
-    // for (const auto &[documentNumber, frequency] : sortedResults) {
-    //     std::string documentPath = store->getDocument(documentNumber);
-    //     std::cout << "Document Path: " << documentPath << ", Frequency: " << frequency << std::endl;
 
-    //     (*reply->mutable_search_results())[documentPath] = frequency;
-    // }
-    for (const auto &[documentNumber, frequency] : sortedResults)
-    {
+    for (const auto &[documentNumber, frequency] : sortedResults) {
         DocumentResult documentResult = store->getDocument(documentNumber);
 
-        // Create a new DocumentResult entry and populate it
         auto *resultEntry = reply->add_search_results();
         
         resultEntry->set_document_path(documentResult.documentPath);

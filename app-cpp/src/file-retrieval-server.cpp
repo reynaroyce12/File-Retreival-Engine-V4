@@ -7,7 +7,6 @@
 
 int main(int argc, char** argv)
 {
-    // TO-DO change server port to a non-privileged port from argv[1] ✅
     int serverPort = std::atoi(argv[1]);
 
     std::shared_ptr<IndexStore> store = std::make_shared<IndexStore>();

@@ -21,27 +21,9 @@ long IndexStore::putDocument(std::string documentPath, std::string clientId) {
     // reverse map for getDocument method for constant complexity while retrieving docs
     reverseDocumentMap[documentNumber] = documentPath;
 
-    //    std::cout << "Document Map Contents:" << std::endl;
-    //     for (const auto& entry : documentMap) {
-    //         const std::string& documentPath = entry.first;
-    //         const DocumentInfo& info = entry.second;
-    //         std::cout << "Document Path: " << documentPath
-    //                   << ", Document Number: " << info.documentNumber
-    //                   << ", Client ID: " << info.clientId << std::endl;
-    //     }
-
     return documentNumber;
 }
 
-// std::string IndexStore::getDocument(long documentNumber) {
-//     std::string documentPath = "";
-
-//     if (reverseDocumentMap.contains(documentNumber)) {
-//         documentPath = reverseDocumentMap[documentNumber];
-//     }
-
-//     return documentPath;
-// }
 
 DocumentResult IndexStore::getDocument(long documentNumber) {
     std::lock_guard<std::mutex> lock(documentMapMutex);

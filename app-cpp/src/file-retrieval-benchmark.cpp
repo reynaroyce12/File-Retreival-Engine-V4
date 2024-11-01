@@ -40,13 +40,8 @@ void performSearch(ClientProcessingEngine &client, const std::string &query) {
     std::cout << "Search completed in " << searchDuration.count() << " seconds" << std::endl;
 
     auto &results = searchResult.documentFrequencies;
-    size_t resultCount = std::min(results.size(), static_cast<size_t>(10));
     std::cout << "Search results (top 10 out of " << searchResult.totalSize << "):" << std::endl;
 
-    // for (size_t i = 0; i < resultCount; ++i) {
-    //     const auto &doc = results[i];
-    //     std::cout << "* " << doc.clientId << ": " << doc.documentPath << ": " << doc.wordFrequency << std::endl;
-    // }
     for(auto doc: results){
         std::cout << "* " << doc.clientId << ": " << doc.documentPath << ": " << doc.wordFrequency << std::endl;
     }
@@ -87,7 +82,6 @@ int main(int argc, char **argv) {
     std::vector<long> totalBytesIndexed(numberOfClients, 0);
     std::vector<std::thread> workers;
 
-    // Start worker threads for indexing
     for (int i = 0; i < numberOfClients; ++i) {
         workers.emplace_back(runWorker, std::ref(clients[i]), std::ref(clientsDatasetPath[i]), std::ref(totalBytesIndexed[i]));
     }
@@ -105,7 +99,6 @@ int main(int argc, char **argv) {
     std::cout << "\nCompleted indexing " << totalBytes << " bytes of data\n";
     std::cout << "Completed indexing in " << totalTime << " seconds\n";
 
-    // Perform searches only on the first client
     std::vector<std::string> searchQueries = {"at", "Worms", "distortion AND adaptation"};
     for (const auto &query : searchQueries) {
         performSearch(clients[0], query);

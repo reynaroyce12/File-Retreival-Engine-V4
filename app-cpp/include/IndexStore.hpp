@@ -24,9 +24,6 @@ struct DocumentResult {
 
 
 class IndexStore {
-    // TO-DO declare data structure that keeps track of the DocumentMap
-    // TO-DO declare data structures that keeps track of the TermInvertedIndex
-    // TO-DO declare two locks, one for the DocumentMap and one for the TermInvertedIndex
 
     std::unordered_map<std::string, DocumentInfo> documentMap;
     std::unordered_map<long, std::string> reverseDocumentMap;
@@ -43,7 +40,6 @@ class IndexStore {
         virtual ~IndexStore() = default;
         
         long putDocument(std::string documentPath, std::string clientId);
-        // std::string getDocument(long documentNumber);
         DocumentResult getDocument(long documentNumber);
 
         void updateIndex(long documentNumber, const std::unordered_map<std::string, long> &wordFrequencies);

@@ -11,7 +11,6 @@ ClientAppInterface::ClientAppInterface(std::shared_ptr<ClientProcessingEngine> e
 }
 
 void ClientAppInterface::readCommands() {
-    // TO-DO implement the read commands method
 
     // color code constants for output messages
     const std::string RED = "\033[31m";
@@ -35,16 +34,11 @@ void ClientAppInterface::readCommands() {
 
         // if the command begins with connect, connect to the given server
         if (command.size() >= 7 && command.substr(0, 7) == "connect") {
-            // TO-DO parse command cand call connect on the processing engine
 
             std::istringstream iss(command);
             std::string action, serverIPAddress, serverPort;
 
             iss >> action >> serverIPAddress >> serverPort;
-
-            // std::cout << "Server IP " << serverIPAddress << std::endl;
-            // std::cout << "Server Port " << serverPort << std::endl;
-
 
             if(serverIPAddress.empty() || serverPort.empty()) {
                 std::cout << "Invalid connection command" << std::endl;
@@ -52,9 +46,9 @@ void ClientAppInterface::readCommands() {
             }
 
             if(engine->connect(serverIPAddress, serverPort)) {
-                std::cout << "Connection Succesfull!" << std::endl;
+                std::cout << "Connection Succesfull!\n" << std::endl;
             } else {
-                std::cout << "Failed to connect to the server!" << std::endl;
+                std::cout << "Failed to connect to the server!\n" << std::endl;
             }
 
             continue;
@@ -62,8 +56,6 @@ void ClientAppInterface::readCommands() {
         
         // if the command begins with index, index the files from the specified directory
         if (command.size() >= 5 && command.substr(0, 5) == "index") {
-            // TO-DO parse command and call indexFolder on the processing engine ✅
-            // TO-DO print the execution time and the total number of bytes read ✅
             
             std::string folderPath = command.substr(6);
 
@@ -85,8 +77,8 @@ void ClientAppInterface::readCommands() {
             if (result.totalBytesRead == 0) {
                 std::cout << YELLOW << "No files found to index!" << RESET << std::endl;
             } else {
-                std::cout << "Completed indexing " << result.totalBytesRead << " bytes of data" << std::endl;
-                std::cout << "Completed indexing in " << result.executionTime << " seconds" << std::endl;
+                std::cout << "\nCompleted indexing " << result.totalBytesRead << " bytes of data" << std::endl;
+                std::cout << "Completed indexing in " << result.executionTime << " seconds\n" << std::endl;
             }
 
             continue;
@@ -94,8 +86,6 @@ void ClientAppInterface::readCommands() {
 
         // if the command begins with search, search for files that matches the query
         if (command.size() >= 6 && command.substr(0, 6) == "search") {
-            // TO-DO parse command and call search on the processing engine
-            // TO-DO print the execution time and the top 10 search results
 
             std::string searchQuery = command.substr(7);
 
@@ -112,13 +102,14 @@ void ClientAppInterface::readCommands() {
             std::cout << "\nSearch executed in " << result.executionTime << " seconds." << std::endl;
 
             if (result.documentFrequencies.empty()) {
-                std::cout << YELLOW << "No results found" << RESET << std::endl;
+                std::cout << YELLOW << "No results found\n" << RESET << std::endl;
             } else {
                 std::cout << "Search Results: " << "( Top 10 out of " << result.totalSize << ")\n"
                           << std::endl;
                 for (const auto &docFrequency : result.documentFrequencies) {
                     std::cout << GREEN << "* " << docFrequency.clientId << ": " << docFrequency.documentPath << " (Frequency: " << docFrequency.wordFrequency << ")" << RESET << std::endl;
                 }
+                std::cout << std::endl;
 
                 
             }

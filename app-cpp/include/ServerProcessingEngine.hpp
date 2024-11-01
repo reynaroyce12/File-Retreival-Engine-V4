@@ -16,9 +16,7 @@
 
 class ServerProcessingEngine {
     std::shared_ptr<IndexStore> store;
-    // TO-DO keep track of the FileRetrievalEngineImpl object ✅
-    // TO-DO keep track of the gRPC Server object ✅
-    // TO-DO keep track of the gRPC Server thread ✅
+
 
     std::string serverAddress;
     std::string serverPort;
