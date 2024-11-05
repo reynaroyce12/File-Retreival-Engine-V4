@@ -109,7 +109,7 @@ cmake --build build/
 Once the build is complete, run the server with the following command from the app-cpp directory.
 
 ```
-./build/file-retrieval-engine <port>
+./build/file-retrieval-server <port>
 ```
 
 - `<port>` indicates the port number the server uses for its communication
