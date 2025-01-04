@@ -1,12 +1,4 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/OSNtM4gR)
-## CSC 435 Programming Assignment 5 (Fall 2024)
-**Jarvis College of Computing and Digital Media - DePaul University**
-
-**Student**: Reyna Royce (Email: rroyce@depaul.edu)  
-**Solution programming language**: C++
-
-
-## What This Program Does
+## What This Project Does
 
 This project implements a file retrieval engine designed to index text files located in an input folder and execute search operations on the indexed data. The program utilizes a Client-Server architecture, allowing multiple clients to operate simultaneously. Each client has exclusive access to its dataset and transmits a partial index to the server for search operations. Interprocess communication is facilitated through gRPC, with data serialization achieved using Google Protocol Buffers. The program supports the following features:
 
