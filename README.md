@@ -8,6 +8,9 @@ This project implements a file retrieval engine designed to index text files loc
 - Searching for terms within indexed files, supporting both single-term queries and AND-based multiple term queries.
 - Displays the time taken for indexing and search operations, along with the total bytes read.
 
+### Enhancements in This Version Over the Previous One (V2):
+This version uses gRPC for client-server communication and introduces Google Protocol Buffers for data serialization. Unlike the earlier version, which relied on client-server interactions on POSIX sockers, this version uses a structured communication protocol to enable  coordination between clients and the server. The addition of gRPC improves scalability, while Protocol Buffers optimize data transfer, resulting in faster indexing and search operations.
+
 #### A Few Points to Consider:
 
 - Server can be started by running the executable passing the port as the command line argument
